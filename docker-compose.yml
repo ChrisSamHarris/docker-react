@@ -1,0 +1,23 @@
+version: '3'
+services: 
+    #Single running web container
+    web: 
+        build: 
+                #Context - Files getting pulled, in this case: PWD
+            context: .
+            dockerfile: Dockerfile.dev
+        ports:
+            - "3000:3000"
+        volumes:
+            - /home/node/app/node_modules
+            - .:/home/node/app
+    #Test container
+    tests:
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            # set a placeholder and ensure we dont overwrite the existing directory
+            - /home/node/app/node_modules
+            - .:/home/node/app
+        command: ["npm", "run", "test"]
